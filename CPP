@@ -1,0 +1,72 @@
+#include "Player.h"
+#include <iostream>
+using namespace std;
+
+Player::Player() //default constructor
+{
+    Name = " ";
+    Description = " ";
+    CreatePointsArray(10); //create an array of 10 spots of integers initalizized to 0
+}
+
+
+string Player::GetName()
+{
+    return Name;
+}
+
+string Player::GetDescription()
+{
+    return Description;
+}
+
+int* Player::GetPoints()
+{
+    return Points;
+}
+
+int Player::GetTotalPoints()
+{
+    return totalPoints;
+}
+double Player::GetAvgPoints()
+{
+    return avgPointsPerGame;
+}
+
+
+void Player::SetName(string name)
+{
+    Name = name;
+}
+void Player::SetDescription(string desc)
+{
+    Description = desc;
+}
+
+void Player::SetPoints(int* ptr)
+{
+    for (int i=0; i<10; i++)
+    {
+        Points[i]=ptr[i];
+    }
+}
+
+void Player::CreatePointsArray(int Size)
+{
+    Points = new int[Size];
+    for(int i=0; i<Size; i++)
+    {
+        Points[i] = 0;
+    }
+}
+ void Player::SetTotalPoints(int tp)
+ {
+     totalPoints = tp;
+ }
+
+void Player::SetAvgPoints(double avg)
+{
+    avgPointsPerGame = avg;
+}
+
