@@ -1,0 +1,159 @@
+#include <iostream>
+#include <iomanip>
+#include <Player.h>
+#include <fstream>
+using namespace std;
+
+int main()
+{
+    //temp variables
+    string n; //name
+    string d; //desc
+    int totalp =0;
+    double avgPerGame=0.0;
+    double fulltotal = 0.0; //this is counter for total
+
+    //file
+    fstream bball;
+
+//player variables
+    Player p1;
+    Player p2 = p1;
+    Player p3 = p1;
+    Player p4 = p1;
+    Player p5 = p1;
+    Player p6 = p1;
+
+
+
+    Player playerArr[]= {p1,p2,p3,p4,p5,p6}; //array of 6 players all with the same data as player 1
+
+    //entering players information
+    for (int i=0; i<6; i++)
+
+    {
+        //this gets the name
+        cout<<"\n";
+        cout<<"Enter player"<<i+1<<" name"<<endl;
+        getline(cin,n);
+        playerArr[i].SetName(n); //sets name to the name entered
+
+        //this gets the description
+        cout<<"\n";
+        cout<<"Enter player"<<i+1<<" position"<<endl;
+        getline(cin,d);
+        playerArr[i].SetDescription(d); //sets desc to the desc entered
+        cout<<"\n";
+
+        //this gets points per game per player (60 inputs total)
+        //create temp array to pass to setpoints() member function
+        int Temppoints[10];
+        for (int i=0; i<10; i++)
+        {
+            cout<<"Enter points for game "<<i+1<<endl;;
+            cin>>Temppoints[i];
+            totalp +=Temppoints[i];
+            fulltotal +=Temppoints[i];
+            cin.ignore();
+        }
+        playerArr[i].SetPoints(Temppoints);//pass array to set the points
+        playerArr[i].SetTotalPoints(totalp);//gets total points
+
+        avgPerGame = (totalp/10.0);//caculate avg based on totalp variable
+        playerArr[i].SetAvgPoints(avgPerGame);
+
+        //after we update player[i] using setters, we reset counters back to default for the outerloop
+        totalp = 0;
+        avgPerGame = 0.0;
+    }
+
+        Player player_extra; //the extra player that we will set player 1 equal too
+        player_extra = p1;//overloaded "=" operator
+
+
+        //asking input to change extra player's points
+        cout<<"\n";
+        cout<<"Player 7, enter your points!\n";
+
+        int temppoints[10];
+        for (int i=0; i<10; i++)
+        {
+            cout<<"Enter points for game "<<i+1<<endl;;
+            cin>>temppoints[i];
+            totalp +=temppoints[i];
+            fulltotal += temppoints[i];
+            cin.ignore();
+        }
+        player_extra.SetPoints(temppoints);
+        player_extra.SetTotalPoints(totalp);
+        avgPerGame = (totalp/10.0);
+        player_extra.SetAvgPoints(avgPerGame);
+
+
+        //send data to basketball file using iomanip
+        bball.open("Basketball_report.txt",ios::out);
+
+        bball<<fixed;
+        bball<<showpoint;
+        bball<<setprecision(2);
+
+         bball<<setw(7);
+        bball<<"Name";
+         bball<<setw(13);
+        bball<<"Position";
+         bball<<setw(17);
+        bball<<"Total points";
+         bball<<setw(13);
+        bball<<"Avg points";
+         bball<<setw(10 );
+         bball<<endl;
+
+        for (int i=0; i<6; i++)
+        {
+
+            bball<<playerArr[i].GetName();
+            bball<<setw(10);
+
+            bball<<playerArr[i].GetDescription();
+            bball<<setw(10);
+
+            bball<<playerArr[i].GetTotalPoints();
+            bball<<setw(14);
+
+            bball<<playerArr[i].GetAvgPoints();
+            bball<<setw(10);
+            bball<<endl;
+
+        }
+//getting info of 7th player and displaying it
+
+//NOTE: the name and position of player extra will not show on file. temporary fix:
+
+
+       bball<<player_extra.GetName();\
+       bball<<setw(10);
+       bball<<player_extra.GetDescription();
+       bball<<setw(10);
+       bball<<player_extra.GetTotalPoints();
+       bball<<setw(14);
+       bball<<player_extra.GetAvgPoints();
+       bball<<setw(10);
+
+       bball<<endl;
+       bball<<endl;
+
+       bball<<"Total points: "<<fulltotal;
+       bball<<setw(25);
+       bball<<"Average points: "<<(fulltotal/7.0);
+       bball<<endl<<endl;
+
+       bball<<"For some reason the name and position for extra player wont show.";
+
+        cout<<"Done copying data. Check TextFile. Have a great day!";
+
+        //we are done with file now we close
+        bball.close();
+
+    return 0;
+}
+
